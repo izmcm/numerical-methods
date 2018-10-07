@@ -1,5 +1,6 @@
 import parser
 from mpmath import *
+import matplotlib.pyplot as plt
 
 arr_t = []
 arr_y = []
@@ -28,6 +29,13 @@ def euler_method(y0, t0, h, n, fty):
         t0 += h
     
     file_out.write("\n")
+
+    ## graphic
+    plt.title("Metodo de Euler")
+    plt.plot(arr_t, arr_y)
+    plt.ylabel("y values")
+    plt.xlabel("t values")
+    plt.show()
 
 ########################## EULER INVERSO ##########################
 def backward_euler_method(y0, t0, h, n, fty):
@@ -58,6 +66,13 @@ def backward_euler_method(y0, t0, h, n, fty):
         y0 += h*eval(expr)
     
     file_out.write("\n")
+    
+    ## graphic
+    plt.title("Metodo de Euler Inverso")
+    plt.plot(arr_t, arr_y)
+    plt.ylabel("y values")
+    plt.xlabel("t values")
+    plt.show()
     
 ########################## EULER APRIMORADO ##########################
 def best_euler_method(y0, t0, h, n, fty):
@@ -94,6 +109,13 @@ def best_euler_method(y0, t0, h, n, fty):
         y0 += (h/2)*(f_tn_yn + f_tn1_yn1)
     
     file_out.write("\n")
+
+    ## graphic
+    plt.title("Metodo de Euler Aprimorado")
+    plt.plot(arr_t, arr_y)
+    plt.ylabel("y values")
+    plt.xlabel("t values")
+    plt.show()
 
 ########################## MAIN ##########################
 with open("entrada.txt") as file_in:

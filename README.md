@@ -5,7 +5,7 @@ Implementação dos métodos numéricos dados na disciplina Métodos Numéricos 
 Sistemas Operacionais testados: macOS 10.14
 
 ### Pré-requisitos e instalações
- * [Python](https://www.python.org/download/releases/3.0/)
+ * [Python3](https://www.python.org/download/releases/3.0/)
 
 No macOS usando [Homebrew](https://brew.sh/)
 ```

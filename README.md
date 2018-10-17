@@ -17,12 +17,12 @@ $ sudo apt-get install python3
 $ sudo apt-get install python3-pip
 ```
 
- * [MpMath](http://mpmath.org/)
+ * [MpMath](http://mpmath.org/) - para ler expressões
 ```
 $ sudo pip3 install mpmath
 ```
 
- * [Matplotlib](https://matplotlib.org/)
+ * [Matplotlib](https://matplotlib.org/) - para plotar gráficos
 ```
 $ sudo apt-get install python3-matplotlib
 ```

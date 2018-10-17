@@ -143,7 +143,6 @@ def adams_bashforth_method(t0, h, n, fty, order):
 	elif order == 8:
 		ab_8(t0, h, n, fty)
 
-
 ####################################################################### ADAMS BASHFORTH - ORDENS 2~8 ########################################################################
 def ab_8(t0, h, n, fty):
 	expr = parser.expr(fty).compile()
@@ -352,32 +351,291 @@ def ab_2(t0, h, n, fty):
 def adams_multon_method(t0, h, n, fty, order):
 	# yn+1 = yn + (h/2)*(f(tn+1, yn+1) + f(tn, yn))
 	if order == 2:
-		ab_2(t0, h, n, fty)
+		am_2(t0, h, n, fty)
 
-	# yn+1 = yn + h*((23/12)*f(tn, yn) - (4/3)*f(tn-1, yn-1) + (5/12)*f(tn-2, yn-2))
+	# yn+1 = yn + h*((5/12)*f(tn+1, yn+1) + (2/3)*f(tn, yn) - (1/12)*f(tn-1, yn-1))
 	elif order == 3:
-		ab_3(t0, h, n, fty)
+		am_3(t0, h, n, fty)
 
-	# yn+1 = yn + h*((55/24)*f(tn, yn) - (59/24)*f(tn-1, yn-1) + (37/24)*f(tn-2, yn-2) - (3/8)*f(tn-3, yn-3))
+	# yn+1 = yn + h*((3/8)*f(tn+1, yn+1) + (19/24)*f(tn, yn) - (5/24)*f(tn-1, yn-1) + (1/24)*f(tn-2, yn-2))
 	elif order == 4:
-		ab_4(t0, h, n, fty)
+		am_4(t0, h, n, fty)
 
-	# yn+1 = yn + h*((1901/720)*f(tn, yn) - (1387/360)*f(tn-1, yn-1) + (109/30)*f(tn-2, yn-2) - (637/360)*f(tn-3, yn-3) + (251/720)*f(tn-4, yn-4))
+	# yn+1 = yn + h*((251/720)*f(tn+1, yn+1) + (323/360)*f(tn, yn) - (11/30)*f(tn-1, yn-1) + (53/360)*f(tn-2, yn-2) - (19/720)*f(tn-3, yn-3))
 	elif order == 5:
-		ab_5(t0, h, n, fty)
+		am_5(t0, h, n, fty)
 
-	# yn+1 = yn + h*((4277/1440)*f(tn, yn) - (2641/480)*f(tn-1, yn-1) + (4991/720)*f(tn-2, yn-2) - (3649/720)*f(tn-3, yn-3) + (959/480)*f(tn-4, yn-4) - (95/288)*f(tn-5, yn-5))
+	# yn+1 = yn + h*((95/288)*f(tn+1, yn+1) + (1427/1440)*f(tn, yn) - (133/240)*f(tn-1, yn-1) + (241/720)*f(tn-2, yn-2) - (173/1440)*f(tn-3, yn-3) + (3/160)*f(tn-4, yn-4))
 	elif order == 6:
-		ab_6(t0, h, n, fty)
+		am_6(t0, h, n, fty)
 
-	# yn+1 = yn + h*((198721/60480)*f(tn, yn) - (18637/2520)*f(tn-1, yn-1) + (235183/20160)*f(tn-2, yn-2) - (10754/945)*f(tn-3, yn-3) + (135713/20160)*f(tn-4, yn-4) - (5603/2520)*f(tn-5, yn-5) + (19087/60480)*f(tn-6, yn-6))
+	# yn+1 = yn + h*((19087/60480)*f(tn+1, yn+1) + (2713/2520)*f(tn, yn) - (15487/20160)*f(tn-1, yn-1) + (586/945)*f(tn-2, yn-2) - (5737/20160)*f(tn-3, yn-3) + (263/2520)*f(tn-4, yn-4) - (863/60480)*f(tn-5, yn-5))
 	elif order == 7:
-		ab_7(t0, h, n, fty)
+		am_7(t0, h, n, fty)
 	
-	#yn+1 = yn + h*((16083/4480)*f(tn, yn) - (1152169/120960)*f(tn-1, yn-1) + (242653/13440)*f(tn-2, yn-2) - (296053/13440)*f(tn-3, yn-3) + (2102243/120960)*f(tn-4, yn-4) - (115747/13440)*f(tn-5, yn-5) + (32863/13440)*f(tn-6, yn-6) - (5257/17280)*f(tn-7, yn-7))
+	#yn+1 = yn + h*((5257/17280)*f(tn+1, yn+1) + (139849/120960)*f(tn, yn) - (4511/4480)*f(tn-1, yn-1) + (123133/120960)*f(tn-2, yn-2) - (88574/120960)*f(tn-3, yn-3) + (1537/4480)*f(tn-4, yn-4) - (11351/120960)*f(tn-5, yn-5) + (275/24192)*f(tn-6, yn-6))
 	elif order == 8:
-		ab_8(t0, h, n, fty)
+		am_8(t0, h, n, fty)
 
+########################################################################## ADAMS MULTON - ORDENS 2~8 ###########################################################################
+def am_2(t0, h, n, fty):
+	expr = parser.expr(fty).compile()
+
+	y0 = arr_y[len(arr_y) - 1]
+
+	for i in range(len(arr_y), n + 1):
+		arr_t.append(t0)
+
+		### euler inverso para estimar yn+1 ###
+		# yn+1 = yn + h*f(tn, yn)
+		yn1_euler = y0 + h*do_eval(arr_t[len(arr_y) - 1], y0, expr) # descobre yn+1
+ 
+		# yn+1 = yn + h*f(tn+1, yn+1)
+		yn1_be = y0 + h*do_eval(t0, yn1_euler, expr)
+		### euler inverso para estimar yn+1 ###
+
+		# f(tn+1, yn+1)
+		f_tnp1_ynp1 = do_eval(arr_t[len(arr_t) - 1], yn1_be, expr)
+
+		# f(tn, yn)
+		f_tn_yn = do_eval(arr_t[len(arr_y) - 1], y0, expr)
+
+		# yn+1 = yn + (h/2)*(f(tn+1, yn+1) + f(tn, yn))
+		y0 += (h/2)*(f_tn_yn + f_tnp1_ynp1)
+		t0 += h
+
+		arr_y.append(y0)
+
+def am_3(t0, h, n, fty):
+	expr = parser.expr(fty).compile()
+
+	y0 = arr_y[len(arr_y) - 1]
+
+	for i in range(len(arr_y), n + 1):
+		arr_t.append(t0)
+
+		### euler inverso para estimar yn+1 ###
+		# yn+1 = yn + h*f(tn, yn)
+		yn1_euler = y0 + h*do_eval(arr_t[len(arr_y) - 1], y0, expr) # descobre yn+1
+ 
+		# yn+1 = yn + h*f(tn+1, yn+1)
+		yn1_be = y0 + h*do_eval(t0, yn1_euler, expr)
+		### euler inverso para estimar yn+1 ###
+
+		# f(tn+1, yn+1)
+		f_tnp1_ynp1 = do_eval(arr_t[len(arr_t) - 1], yn1_be, expr)
+
+		# f(tn, yn)
+		f_tn_yn = do_eval(arr_t[len(arr_y) - 1], y0, expr)
+
+		# f(tn-1, yn-1)
+		f_tn1_yn1 = do_eval(arr_t[len(arr_y) - 2], arr_y[len(arr_y) - 2], expr)
+
+		# yn+1 = yn + h*((5/12)*f(tn+1, yn+1) + (2/3)*f(tn, yn) - (1/12)*f(tn-1, yn-1))
+		y0 += h*((5/12)*f_tnp1_ynp1 + (2/3)*f_tn_yn - (1/12)*f_tn1_yn1)
+		t0 += h
+
+		arr_y.append(y0)
+
+def am_4(t0, h, n, fty):
+	expr = parser.expr(fty).compile()
+
+	y0 = arr_y[len(arr_y) - 1]
+
+	for i in range(len(arr_y), n + 1):
+		arr_t.append(t0)
+
+		### euler inverso para estimar yn+1 ###
+		# yn+1 = yn + h*f(tn, yn)
+		yn1_euler = y0 + h*do_eval(arr_t[len(arr_y) - 1], y0, expr) # descobre yn+1
+ 
+		# yn+1 = yn + h*f(tn+1, yn+1)
+		yn1_be = y0 + h*do_eval(t0, yn1_euler, expr)
+		### euler inverso para estimar yn+1 ###
+
+		# f(tn+1, yn+1)
+		f_tnp1_ynp1 = do_eval(arr_t[len(arr_t) - 1], yn1_be, expr)
+
+		# f(tn, yn)
+		f_tn_yn = do_eval(arr_t[len(arr_y) - 1], y0, expr)
+
+		# f(tn-1, yn-1)
+		f_tn1_yn1 = do_eval(arr_t[len(arr_y) - 2], arr_y[len(arr_y) - 2], expr)
+
+		# f(tn-2, yn-2)
+		f_tn2_yn2 = do_eval(arr_t[len(arr_y) - 3], arr_y[len(arr_y) - 3], expr)
+
+		# yn+1 = yn + h*((3/8)*f(tn+1, yn+1) + (19/24)*f(tn, yn) - (5/24)*f(tn-1, yn-1) + (1/24)*f(tn-2, yn-2))
+		y0 += h*((3/8)*f_tnp1_ynp1 + (19/24)*f_tn_yn - (5/24)*f_tn1_yn1 + (1/24)*f_tn2_yn2)
+		t0 += h
+
+		arr_y.append(y0)
+
+def am_5(t0, h, n, fty):
+	expr = parser.expr(fty).compile()
+
+	y0 = arr_y[len(arr_y) - 1]
+
+	for i in range(len(arr_y), n + 1):
+		arr_t.append(t0)
+
+		### euler inverso para estimar yn+1 ###
+		# yn+1 = yn + h*f(tn, yn)
+		yn1_euler = y0 + h*do_eval(arr_t[len(arr_y) - 1], y0, expr) # descobre yn+1
+ 
+		# yn+1 = yn + h*f(tn+1, yn+1)
+		yn1_be = y0 + h*do_eval(t0, yn1_euler, expr)
+		### euler inverso para estimar yn+1 ###
+
+		# f(tn+1, yn+1)
+		f_tnp1_ynp1 = do_eval(arr_t[len(arr_t) - 1], yn1_be, expr)
+
+		# f(tn, yn)
+		f_tn_yn = do_eval(arr_t[len(arr_y) - 1], y0, expr)
+
+		# f(tn-1, yn-1)
+		f_tn1_yn1 = do_eval(arr_t[len(arr_y) - 2], arr_y[len(arr_y) - 2], expr)
+
+		# f(tn-2, yn-2)
+		f_tn2_yn2 = do_eval(arr_t[len(arr_y) - 3], arr_y[len(arr_y) - 3], expr)
+
+		# f(tn-3, yn-3)
+		f_tn3_yn3 = do_eval(arr_t[len(arr_y) - 4], arr_y[len(arr_y) - 4], expr)
+
+		# yn+1 = yn + h*((251/720)*f(tn+1, yn+1) + (323/360)*f(tn, yn) - (11/30)*f(tn-1, yn-1) + (53/360)*f(tn-2, yn-2) - (19/720)*f(tn-3, yn-3))
+		y0 += h*((251/720)*f_tnp1_ynp1 + (323/360)*f_tn_yn - (11/30)*f_tn1_yn1 + (53/360)*f_tn2_yn2 - (19/720)*f_tn3_yn3)
+		t0 += h
+
+		arr_y.append(y0)
+
+def am_6(t0, h, n, fty):
+	expr = parser.expr(fty).compile()
+
+	y0 = arr_y[len(arr_y) - 1]
+
+	for i in range(len(arr_y), n + 1):
+		arr_t.append(t0)
+
+		### euler inverso para estimar yn+1 ###
+		# yn+1 = yn + h*f(tn, yn)
+		yn1_euler = y0 + h*do_eval(arr_t[len(arr_y) - 1], y0, expr) # descobre yn+1
+ 
+		# yn+1 = yn + h*f(tn+1, yn+1)
+		yn1_be = y0 + h*do_eval(t0, yn1_euler, expr)
+		### euler inverso para estimar yn+1 ###
+
+		# f(tn+1, yn+1)
+		f_tnp1_ynp1 = do_eval(arr_t[len(arr_t) - 1], yn1_be, expr)
+
+		# f(tn, yn)
+		f_tn_yn = do_eval(arr_t[len(arr_y) - 1], y0, expr)
+
+		# f(tn-1, yn-1)
+		f_tn1_yn1 = do_eval(arr_t[len(arr_y) - 2], arr_y[len(arr_y) - 2], expr)
+
+		# f(tn-2, yn-2)
+		f_tn2_yn2 = do_eval(arr_t[len(arr_y) - 3], arr_y[len(arr_y) - 3], expr)
+
+		# f(tn-3, yn-3)
+		f_tn3_yn3 = do_eval(arr_t[len(arr_y) - 4], arr_y[len(arr_y) - 4], expr)
+
+		# f(tn-4, yn-4)
+		f_tn4_yn4 = do_eval(arr_t[len(arr_y) - 5], arr_y[len(arr_y) - 5], expr)
+
+		# yn+1 = yn + h*((95/288)*f(tn+1, yn+1) + (1427/1440)*f(tn, yn) - (133/240)*f(tn-1, yn-1) + (241/720)*f(tn-2, yn-2) - (173/1440)*f(tn-3, yn-3) + (3/160)*f(tn-4, yn-4))
+		y0 += h*((95/288)*f_tnp1_ynp1 + (1427/1440)*f_tn_yn - (133/240)*f_tn1_yn1 + (241/720)*f_tn2_yn2 - (173/1440)*f_tn3_yn3 + (3/160)*f_tn4_yn4)
+		t0 += h
+
+		arr_y.append(y0)
+
+def am_7(t0, h, n, fty):
+	expr = parser.expr(fty).compile()
+
+	y0 = arr_y[len(arr_y) - 1]
+
+	for i in range(len(arr_y), n + 1):
+		arr_t.append(t0)
+
+		### euler inverso para estimar yn+1 ###
+		# yn+1 = yn + h*f(tn, yn)
+		yn1_euler = y0 + h*do_eval(arr_t[len(arr_y) - 1], y0, expr) # descobre yn+1
+ 
+		# yn+1 = yn + h*f(tn+1, yn+1)
+		yn1_be = y0 + h*do_eval(t0, yn1_euler, expr)
+		### euler inverso para estimar yn+1 ###
+
+		# f(tn+1, yn+1)
+		f_tnp1_ynp1 = do_eval(arr_t[len(arr_t) - 1], yn1_be, expr)
+
+		# f(tn, yn)
+		f_tn_yn = do_eval(arr_t[len(arr_y) - 1], y0, expr)
+
+		# f(tn-1, yn-1)
+		f_tn1_yn1 = do_eval(arr_t[len(arr_y) - 2], arr_y[len(arr_y) - 2], expr)
+
+		# f(tn-2, yn-2)
+		f_tn2_yn2 = do_eval(arr_t[len(arr_y) - 3], arr_y[len(arr_y) - 3], expr)
+
+		# f(tn-3, yn-3)
+		f_tn3_yn3 = do_eval(arr_t[len(arr_y) - 4], arr_y[len(arr_y) - 4], expr)
+
+		# f(tn-4, yn-4)
+		f_tn4_yn4 = do_eval(arr_t[len(arr_y) - 5], arr_y[len(arr_y) - 5], expr)
+
+		# f(tn-5, yn-5)
+		f_tn5_yn5 = do_eval(arr_t[len(arr_y) - 6], arr_y[len(arr_y) - 6], expr)
+
+		# yn+1 = yn + h*((19087/60480)*f(tn+1, yn+1) + (2713/2520)*f(tn, yn) - (15487/20160)*f(tn-1, yn-1) + (586/945)*f(tn-2, yn-2) - (5737/20160)*f(tn-3, yn-3) + (263/2520)*f(tn-4, yn-4) - (863/60480)*f(tn-5, yn-5))
+		y0 += h*((19087/60480)*f_tnp1_ynp1 + (2713/2520)*f_tn_yn - (15487/20160)*f_tn1_yn1 + (586/945)*f_tn2_yn2 - (5737/20160)*f_tn3_yn3 + (263/2520)*f_tn4_yn4 - (863/60480)*f_tn5_yn5)
+		t0 += h
+
+		arr_y.append(y0)
+
+def am_8(t0, h, n, fty):
+	expr = parser.expr(fty).compile()
+
+	y0 = arr_y[len(arr_y) - 1]
+
+	for i in range(len(arr_y), n + 1):
+		arr_t.append(t0)
+
+		### euler inverso para estimar yn+1 ###
+		# yn+1 = yn + h*f(tn, yn)
+		yn1_euler = y0 + h*do_eval(arr_t[len(arr_y) - 1], y0, expr) # descobre yn+1
+ 
+		# yn+1 = yn + h*f(tn+1, yn+1)
+		yn1_be = y0 + h*do_eval(t0, yn1_euler, expr)
+		### euler inverso para estimar yn+1 ###
+
+		# f(tn+1, yn+1)
+		f_tnp1_ynp1 = do_eval(arr_t[len(arr_t) - 1], yn1_be, expr)
+
+		# f(tn, yn)
+		f_tn_yn = do_eval(arr_t[len(arr_y) - 1], y0, expr)
+
+		# f(tn-1, yn-1)
+		f_tn1_yn1 = do_eval(arr_t[len(arr_y) - 2], arr_y[len(arr_y) - 2], expr)
+
+		# f(tn-2, yn-2)
+		f_tn2_yn2 = do_eval(arr_t[len(arr_y) - 3], arr_y[len(arr_y) - 3], expr)
+
+		# f(tn-3, yn-3)
+		f_tn3_yn3 = do_eval(arr_t[len(arr_y) - 4], arr_y[len(arr_y) - 4], expr)
+
+		# f(tn-4, yn-4)
+		f_tn4_yn4 = do_eval(arr_t[len(arr_y) - 5], arr_y[len(arr_y) - 5], expr)
+
+		# f(tn-5, yn-5)
+		f_tn5_yn5 = do_eval(arr_t[len(arr_y) - 6], arr_y[len(arr_y) - 6], expr)
+
+		# f(tn-6, yn-6)
+		f_tn5_yn5 = do_eval(arr_t[len(arr_y) - 7], arr_y[len(arr_y) - 7], expr)
+
+		#yn+1 = yn + h*((5257/17280)*f(tn+1, yn+1) + (139849/120960)*f(tn, yn) - (4511/4480)*f(tn-1, yn-1) + (123133/120960)*f(tn-2, yn-2) - (88574/120960)*f(tn-3, yn-3) + (1537/4480)*f(tn-4, yn-4) - (11351/120960)*f(tn-5, yn-5) + (275/24192)*f(tn-6, yn-6))
+		y0 += h*((5257/17280)*f_tnp1_ynp1 + (139849/120960)*f_tn_yn - (4511/4480)*f_tn1_yn1 + (123133/120960)*f_tn2_yn2 - (88574/120960)*f_tn3_yn3 + (1537/4480)*f_tn4_yn4 - (11351/120960)*f_tn5_yn5 + (275/24192)*f_tn6_yn6)
+		t0 += h
+
+		arr_y.append(y0)
 
 ##################################################################################### MAIN #####################################################################################
 with open("entrada.txt") as file_in:
@@ -493,12 +751,12 @@ with open("entrada.txt") as file_in:
 			order_str = strin[len(strin) - 1].split("\n")
 			order = int(order_str[0])
 
-			arr_y = [float(a) for a in strin[1:order + 1]]
+			arr_y = [float(a) for a in strin[1:order]]
 
-			t0 = strin[order + 1]
-			h = strin[order + 2]
-			n = strin[order + 3]
-			fty = strin[order + 4]
+			t0 = strin[order]
+			h = strin[order + 1]
+			n = strin[order + 2]
+			fty = strin[order + 3]
 
 			t0 = float(t0)
 			h = float(h)
@@ -512,6 +770,48 @@ with open("entrada.txt") as file_in:
 			strmethod = "Adams Multon de " + str(order) + " ordem"
 			print_in_file(strmethod, h)
 			plt.title(strmethod)
+
+			show_graphic()
+
+		elif strin[0] == "adam_multon_by_euler" or strin[0] == "adam_multon_by_euler_inverso" or strin[0] == "adam_multon_by_euler_aprimorado" or strin[0] == "adam_multon_by_runge_kutta":
+			y0 = strin[1]
+			t0 = strin[2]
+			h = strin[3]
+			n = strin[4]
+			fty = strin[5]
+			order = strin[6].split("\n")
+
+			if strin[0] == "adam_multon_by_euler":
+				t0 = euler_method(float(y0), float(t0), float(h), int(order[0]) - 2, fty)
+				adams_multon_method(float(t0), float(h), int(n), fty, int(order[0]))
+
+				strmethod = "Adams Multon de " + str(order[0]) + " Ordem por Euler"
+				print_in_file(strmethod, h)
+				plt.title(strmethod)
+
+			elif strin[0] == "adam_multon_by_euler_inverso":
+				t0 = backward_euler_method(float(y0), float(t0), float(h), int(order[0]) - 2, fty)
+				adams_multon_method(float(t0), float(h), int(n), fty, int(order[0]))
+
+				strmethod = "Adams Multon de " + str(order[0]) + " Ordem por Euler Inverso"
+				print_in_file(strmethod, h)
+				plt.title(strmethod)
+
+			elif strin[0] == "adam_multon_by_euler_aprimorado":
+				t0 = best_euler_method(float(y0), float(t0), float(h), int(order[0]) - 2, fty)
+				adams_multon_method(float(t0), float(h), int(n), fty, int(order[0]))
+
+				strmethod = "Adams Multon de " + str(order[0]) + " Ordem por Euler Aprimorado"
+				print_in_file(strmethod, h)
+				plt.title(strmethod)
+
+			elif strin[0] == "adam_multon_by_runge_kutta":
+				t0 = runge_kutta_method(float(y0), float(t0), float(h), int(order[0]) - 2, fty)
+				adams_bashforth_method(float(t0), float(h), int(n), fty, int(order[0]))
+
+				strmethod = "Adams Multon de " + str(order[0]) + " Ordem por Runge-Kutta"
+				print_in_file(strmethod, h)
+				plt.title(strmethod)
 
 			show_graphic()
 

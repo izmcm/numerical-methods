@@ -42,7 +42,7 @@ método y0 t0 h n f(t,y) ordem"
 
 **observações**  
 ' a quantidade de valores iniciais é igual ao valor da ordem que se deseja calcular  
-" adams bashforth e adams multon calculam ordens de 2 a 8  
+" adams bashforth e adams multon calculam ordens de 1 a 7  
 " fórmula inversa calcula ordens de 2 a 6  
 
 * Exemplo de entrada:
@@ -75,8 +75,6 @@ $ python3 solver.py
 
 4. Os gráficos ficarão disponíveis conforme a execução, mas os valores de y0 de cada passo deverão ser consultados no arquivo "saida.txt"
 
-* Exemplo de saída:
-```
-colar saida
-```
+* Exemplo de saída no arquivo "saida.txt"
+
 

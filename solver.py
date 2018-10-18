@@ -637,6 +637,204 @@ def am_8(t0, h, n, fty):
 
 		arr_y.append(y0)
 
+############################################################################### FÓRMULA INVERSA ################################################################################
+def backward_formulas_method(t0, h, n, fty, order):
+	# yn+1 = (4/3)*yn - (1/3)*yn-1 + (2/3)*h*f(tn+1, yn+1)
+	if order == 2:
+		bf_2(t0, h, n, fty)
+
+	# yn+1 = (18/11)*yn - (9/11)*yn-1 + (2/11)*yn-2 + (6/11)*h*f(tn+1, yn+1)
+	elif order == 3:
+		bf_3(t0, h, n, fty)
+
+	# yn+1 = (48/25)*yn - (36/25)*yn-1 + (16/25)*yn-2 - (3/25)*yn-3 + (12/25)*h*f(tn+1, yn+1)
+	elif order == 4:
+		bf_4(t0, h, n, fty)
+
+	# yn+1 = (300/137)*yn - (300/137)*yn-1 + (200/137)*yn-2 - (75/137)*yn-3 + (12/137)*yn-4 + (60/137)*h*f(tn+1, yn+1)
+	elif order == 5:
+		bf_5(t0, h, n, fty)
+
+	# yn+1 = (360/147)*yn - (450/147)*yn-1 + (400/147)*yn-2 - (225/147)*yn-3 + (72/147)*yn-4 - (10/147)*yn-5 + (60/147)*h*f(tn+1, yn+1)
+	elif order == 6:
+		bf_6(t0, h, n, fty)
+
+########################################################################### FÓRMULA INVERSA - ORDENS 2~6 ############################################################################
+def bf_2(t0, h, n, fty):
+	expr = parser.expr(fty).compile()
+
+	for i in range(len(arr_y), n + 1):
+		arr_t.append(t0)
+
+		### euler inverso para estimar yn+1 ###
+		# yn+1 = yn + h*f(tn, yn)
+		yn1_euler = arr_y[len(arr_y) - 1] + h*do_eval(arr_t[len(arr_y) - 1], arr_y[len(arr_y) - 1], expr) # descobre yn+1
+ 
+		# yn+1 = yn + h*f(tn+1, yn+1)
+		yn1_be = arr_y[len(arr_y) - 1] + h*do_eval(t0, yn1_euler, expr)
+		### euler inverso para estimar yn+1 ###
+
+		# f(tn+1, yn+1)
+		f_tnp1_ynp1 = do_eval(arr_t[len(arr_t) - 1], yn1_be, expr)
+
+		# yn
+		yn = arr_y[len(arr_y) - 1]
+
+		# yn-1
+		yn1 = arr_y[len(arr_y) - 2]
+
+		# yn+1 = (4/3)*yn - (1/3)*yn-1 + (2/3)*h*f(tn+1, yn+1)
+		y0 = (4/3)*yn - (1/3)*yn1 + (2/3)*h*f_tnp1_ynp1
+		t0 += h
+
+		arr_y.append(y0)
+
+def bf_3(t0, h, n, fty):
+	expr = parser.expr(fty).compile()
+
+	for i in range(len(arr_y), n + 1):
+		arr_t.append(t0)
+
+		### euler inverso para estimar yn+1 ###
+		# yn+1 = yn + h*f(tn, yn)
+		yn1_euler = arr_y[len(arr_y) - 1] + h*do_eval(arr_t[len(arr_y) - 1], arr_y[len(arr_y) - 1], expr) # descobre yn+1
+ 
+		# yn+1 = yn + h*f(tn+1, yn+1)
+		yn1_be = arr_y[len(arr_y) - 1] + h*do_eval(t0, yn1_euler, expr)
+		### euler inverso para estimar yn+1 ###
+
+		# f(tn+1, yn+1)
+		f_tnp1_ynp1 = do_eval(arr_t[len(arr_t) - 1], yn1_be, expr)
+
+		# yn
+		yn = arr_y[len(arr_y) - 1]
+
+		# yn-1
+		yn1 = arr_y[len(arr_y) - 2]
+		
+		# yn-2
+		yn2 = arr_y[len(arr_y) - 3]
+
+		# yn+1 = (18/11)*yn - (9/11)*yn-1 + (2/11)*yn-2 + (6/11)*h*f(tn+1, yn+1)
+		y0 = (18/11)*yn - (9/11)*yn1 + (2/11)*yn2 + (6/11)*h*f_tnp1_ynp1
+		t0 += h
+
+		arr_y.append(y0)
+
+def bf_4(t0, h, n, fty):
+	expr = parser.expr(fty).compile()
+
+	for i in range(len(arr_y), n + 1):
+		arr_t.append(t0)
+
+		### euler inverso para estimar yn+1 ###
+		# yn+1 = yn + h*f(tn, yn)
+		yn1_euler = arr_y[len(arr_y) - 1] + h*do_eval(arr_t[len(arr_y) - 1], arr_y[len(arr_y) - 1], expr) # descobre yn+1
+ 
+		# yn+1 = yn + h*f(tn+1, yn+1)
+		yn1_be = arr_y[len(arr_y) - 1] + h*do_eval(t0, yn1_euler, expr)
+		### euler inverso para estimar yn+1 ###
+
+		# f(tn+1, yn+1)
+		f_tnp1_ynp1 = do_eval(arr_t[len(arr_t) - 1], yn1_be, expr)
+
+		# yn
+		yn = arr_y[len(arr_y) - 1]
+
+		# yn-1
+		yn1 = arr_y[len(arr_y) - 2]
+		
+		# yn-2
+		yn2 = arr_y[len(arr_y) - 3]
+
+		# yn-3
+		yn3 = arr_y[len(arr_y) - 4]
+
+		# yn+1 = (48/25)*yn - (36/25)*yn-1 + (16/25)*yn-2 - (3/25)*yn-3 + (12/25)*h*f(tn+1, yn+1)
+		y0 = (48/25)*yn - (36/25)*yn1 + (16/25)*yn2 - (3/25)*yn3 + (12/25)*h*f_tnp1_ynp1
+		t0 += h
+
+		arr_y.append(y0)
+
+def bf_5(t0, h, n, fty):
+	expr = parser.expr(fty).compile()
+
+	for i in range(len(arr_y), n + 1):
+		arr_t.append(t0)
+
+		### euler inverso para estimar yn+1 ###
+		# yn+1 = yn + h*f(tn, yn)
+		yn1_euler = arr_y[len(arr_y) - 1] + h*do_eval(arr_t[len(arr_y) - 1], arr_y[len(arr_y) - 1], expr) # descobre yn+1
+ 
+		# yn+1 = yn + h*f(tn+1, yn+1)
+		yn1_be = arr_y[len(arr_y) - 1] + h*do_eval(t0, yn1_euler, expr)
+		### euler inverso para estimar yn+1 ###
+
+		# f(tn+1, yn+1)
+		f_tnp1_ynp1 = do_eval(arr_t[len(arr_t) - 1], yn1_be, expr)
+
+		# yn
+		yn = arr_y[len(arr_y) - 1]
+
+		# yn-1
+		yn1 = arr_y[len(arr_y) - 2]
+		
+		# yn-2
+		yn2 = arr_y[len(arr_y) - 3]
+
+		# yn-3
+		yn3 = arr_y[len(arr_y) - 4]
+
+		# yn-4
+		yn4 = arr_y[len(arr_y) - 5]
+
+		# yn+1 = (300/137)*yn - (300/137)*yn-1 + (200/137)*yn-2 - (75/137)*yn-3 + (12/137)*yn-4 + (60/137)*h*f(tn+1, yn+1)
+		y0 = (300/137)*yn - (300/137)*yn1 + (200/137)*yn2 - (75/137)*yn3 + (12/137)*yn4 + (60/137)*h*f_tnp1_ynp1
+		t0 += h
+
+		arr_y.append(y0)
+
+def bf_6(t0, h, n, fty):
+	expr = parser.expr(fty).compile()
+
+	for i in range(len(arr_y), n + 1):
+		arr_t.append(t0)
+
+		### euler inverso para estimar yn+1 ###
+		# yn+1 = yn + h*f(tn, yn)
+		yn1_euler = arr_y[len(arr_y) - 1] + h*do_eval(arr_t[len(arr_y) - 1], arr_y[len(arr_y) - 1], expr) # descobre yn+1
+ 
+		# yn+1 = yn + h*f(tn+1, yn+1)
+		yn1_be = arr_y[len(arr_y) - 1] + h*do_eval(t0, yn1_euler, expr)
+		### euler inverso para estimar yn+1 ###
+
+		# f(tn+1, yn+1)
+		f_tnp1_ynp1 = do_eval(arr_t[len(arr_t) - 1], yn1_be, expr)
+
+		# yn
+		yn = arr_y[len(arr_y) - 1]
+
+		# yn-1
+		yn1 = arr_y[len(arr_y) - 2]
+		
+		# yn-2
+		yn2 = arr_y[len(arr_y) - 3]
+
+		# yn-3
+		yn3 = arr_y[len(arr_y) - 4]
+
+		# yn-4
+		yn4 = arr_y[len(arr_y) - 5]
+		
+		# yn-5
+		yn5 = arr_y[len(arr_y) - 6]
+
+		# yn+1 = (360/147)*yn - (450/147)*yn-1 + (400/147)*yn-2 - (225/147)*yn-3 + (72/147)*yn-4 - (10/147)*yn-5 + (60/147)*h*f(tn+1, yn+1)
+		y0 = (360/147)*yn - (450/147)*yn1 + (400/147)*yn2 - (225/147)*yn3 + (72/147)*yn4 - (10/147)*yn5 + (60/147)*h*f_tnp1_ynp1
+		t0 += h
+
+		arr_y.append(y0)
+
 ##################################################################################### MAIN #####################################################################################
 with open("entrada.txt") as file_in:
 	for line in file_in:
@@ -810,6 +1008,74 @@ with open("entrada.txt") as file_in:
 				adams_bashforth_method(float(t0), float(h), int(n), fty, int(order[0]))
 
 				strmethod = "Adams Multon de " + str(order[0]) + " Ordem por Runge-Kutta"
+				print_in_file(strmethod, h)
+				plt.title(strmethod)
+
+			show_graphic()
+
+		elif strin[0] == "formula_inversa":
+			order_str = strin[len(strin) - 1].split("\n")
+			order = int(order_str[0])
+
+			arr_y = [float(a) for a in strin[1:order]]
+
+			t0 = strin[order]
+			h = strin[order + 1]
+			n = strin[order + 2]
+			fty = strin[order + 3]
+
+			t0 = float(t0)
+			h = float(h)
+
+			for i in range(0, len(arr_y)):
+				arr_t.append(t0)
+				t0 += h
+
+			backward_formulas_method(t0, h, int(n), fty, int(order))
+
+			strmethod = "Formula inversa de " + str(order) + " ordem"
+			print_in_file(strmethod, h)
+			plt.title(strmethod)
+
+			show_graphic()
+
+		elif strin[0] == "formula_inversa_by_euler" or strin[0] == "formula_inversa_by_euler_inverso" or strin[0] == "formula_inversa_by_euler_aprimorado" or strin[0] == "formula_inversa_by_runge_kutta":
+			y0 = strin[1]
+			t0 = strin[2]
+			h = strin[3]
+			n = strin[4]
+			fty = strin[5]
+			order = strin[6].split("\n")
+
+			if strin[0] == "formula_inversa_by_euler":
+				t0 = euler_method(float(y0), float(t0), float(h), int(order[0]) - 2, fty)
+				backward_formulas_method(float(t0), float(h), int(n), fty, int(order[0]))
+
+				strmethod = "Formula inversa de " + str(order[0]) + " Ordem por Euler"
+				print_in_file(strmethod, h)
+				plt.title(strmethod)
+
+			elif strin[0] == "formula_inversa_by_euler_inverso":
+				t0 = backward_euler_method(float(y0), float(t0), float(h), int(order[0]) - 2, fty)
+				backward_formulas_method(float(t0), float(h), int(n), fty, int(order[0]))
+
+				strmethod = "Formula inversa de " + str(order[0]) + " Ordem por Euler Inverso"
+				print_in_file(strmethod, h)
+				plt.title(strmethod)
+
+			elif strin[0] == "formula_inversa_by_euler_aprimorado":
+				t0 = best_euler_method(float(y0), float(t0), float(h), int(order[0]) - 2, fty)
+				backward_formulas_method(float(t0), float(h), int(n), fty, int(order[0]))
+
+				strmethod = "Formula inversa de " + str(order[0]) + " Ordem por Euler Aprimorado"
+				print_in_file(strmethod, h)
+				plt.title(strmethod)
+
+			elif strin[0] == "formula_inversa_by_runge_kutta":
+				t0 = runge_kutta_method(float(y0), float(t0), float(h), int(order[0]) - 2, fty)
+				backward_formulas_method(float(t0), float(h), int(n), fty, int(order[0]))
+
+				strmethod = "Formula inversa de " + str(order[0]) + " Ordem por Runge-Kutta"
 				print_in_file(strmethod, h)
 				plt.title(strmethod)
 

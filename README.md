@@ -75,6 +75,6 @@ $ python3 solver.py
 
 4. Os gráficos ficarão disponíveis conforme a execução, mas os valores de y0 de cada passo deverão ser consultados no arquivo "saida.txt"
 
-* Exemplo de saída no arquivo "saida.txt"
+* Exemplo de saída para a entrada dada no arquivo "saida.txt"
 
 

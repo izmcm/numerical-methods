@@ -42,7 +42,7 @@ método y0 t0 h n f(t,y) ordem"
 
 **observações**  
 ' a quantidade de valores iniciais é igual ao valor da ordem que se deseja calcular em bashforth e da ordem-1 em multon e fórmula inversa  
-" adams bashforth e adams multon calculam ordens de 1 a 7  
+" adams bashforth e adams multon calculam ordens de 2 a 8  
 " fórmula inversa calcula ordens de 2 a 6  
 
 * Exemplo de entrada:

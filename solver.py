@@ -22,7 +22,7 @@ def print_in_file(method, h):
     file_out.write("h = " + str(h) + "\n")
 
     for i in range(0, len(arr_y)):
-        file_out.write(str(arr_t[i]) + " " + str(arr_y[i]) + "\n")
+        file_out.write(str(i) + " " + str(arr_y[i]) + "\n")
 
     file_out.write("\n")
 
